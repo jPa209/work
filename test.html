@@ -1,20 +1,25 @@
 <!DOCTYPE html>
-<html lang="zh-Hant">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <title>抽籤分組</title>
+    <title>抽签助手</title>
     <style>
         body {
-            font-family: "Microsoft JhengHei", sans-serif;
+            font-family: "Microsoft YaHei", sans-serif;
             background: linear-gradient(135deg, #83a4d4, #b6fbff);
             margin: 0;
             padding: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .container {
             max-width: 450px;
+            width: 90%;
             margin: 60px auto;
-            background: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.95);
             padding: 30px;
             border-radius: 18px;
             box-shadow: 0 8px 25px rgba(0,0,0,0.15);
@@ -27,12 +32,21 @@
             margin-bottom: 25px;
         }
 
+        .select-label {
+            display: block;
+            margin-bottom: 10px;
+            color: #555;
+            font-size: 16px;
+        }
+
         select {
             width: 100%;
             padding: 12px;
             font-size: 18px;
             border-radius: 8px;
             border: 1px solid #ccc;
+            background-color: #fff;
+            box-sizing: border-box;
         }
 
         button {
@@ -43,13 +57,29 @@
             border: none;
             border-radius: 10px;
             cursor: pointer;
-            background: #4a90e2;
             color: white;
             transition: 0.2s;
         }
 
-        button:hover {
+        .draw-btn {
+            background: #4a90e2;
+        }
+        
+        .draw-btn:hover {
             background: #357ABD;
+        }
+        
+        .view-btn {
+            background: #2ecc71;
+        }
+        
+        .view-btn:hover {
+            background: #27ae60;
+        }
+
+        button:disabled {
+            background: #cccccc;
+            cursor: not-allowed;
         }
 
         .result-box {
@@ -60,79 +90,392 @@
             border-radius: 10px;
             margin-top: 20px;
             border: 1px solid #cfe0ff;
+            min-height: 100px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .view-box {
+            text-align: center;
+            font-size: 20px;
+            padding: 20px;
+            background: #f0fff4;
+            border-radius: 10px;
+            margin-top: 20px;
+            border: 1px solid #c1e7c8;
+            min-height: 100px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
 
-        .page { display: none; }
-        .active { display: block; }
+        .page { 
+            display: none; 
+            width: 100%;
+        }
+        
+        .active { 
+            display: block; 
+        }
 
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(12px); }
             to   { opacity: 1; transform: translateY(0); }
+        }
+        
+        .status-info {
+            text-align: center;
+            font-size: 14px;
+            color: #666;
+            margin-top: 10px;
+            padding: 8px;
+            background-color: #f0f8ff;
+            border-radius: 5px;
+        }
+        
+        .selected-team {
+            font-size: 22px;
+            color: #4a90e2;
+            margin: 10px 0;
+        }
+        
+        .view-team {
+            font-size: 22px;
+            color: #2ecc71;
+            margin: 10px 0;
+        }
+        
+        .group-result {
+            font-size: 26px;
+            color: #e74c3c;
+            font-weight: bold;
+            margin: 15px 0;
+        }
+        
+        .welcome-message {
+            text-align: center;
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 20px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+        }
+        
+        .session-info {
+            text-align: center;
+            font-size: 14px;
+            color: #888;
+            margin-top: 15px;
+            padding: 5px;
+            font-style: italic;
         }
     </style>
 </head>
 
 <body>
 
-    <!-- 第一頁 -->
+    <!-- 第一页 -->
     <div id="page1" class="page active">
         <div class="container">
-            <h2>抽籤分組</h2>
-
-            <!-- 你之後可以把 1號 → 寫成 真實姓名 -->
+            <h2>抽签助手</h2>
+            
+            <div class="welcome-message" id="welcomeMessage">
+                欢迎！请选择您的队伍进行抽签
+            </div>
+            
+            <div class="select-label">选择你的队伍</div>
             <select id="person">
-                <option value="1">集團聯隊</option>
-                <option value="2">運營一隊</option>
-                <option value="3">運營二隊</option>
-                <option value="4">運營三隊</option>
-                <option value="5">建設聯隊</option>
-                <option value="6">慧生活聯隊</option>
-                <option value="7">樞紐聯隊</option>
-                <option value="8">公交聯隊</option>
+                <option value="" disabled selected>请选择你的队伍</option>
+                <option value="1">集团联队</option>
+                <option value="2">运营一队</option>
+                <option value="3">运营二队</option>
+                <option value="4">运营三队</option>
+                <option value="5">建设联队</option>
+                <option value="6">慧生活联队</option>
+                <option value="7">枢纽联队</option>
+                <option value="8">公交联队</option>
             </select>
+            
+            <div class="status-info" id="statusInfo">
+                请选择你的队伍进行抽签
+            </div>
 
-            <button onclick="draw()">抽籤</button>
+            <button id="actionButton" class="draw-btn" onclick="handleAction()">抽签</button>
+            
+            <div class="session-info">
+                
+            </div>
         </div>
     </div>
 
-    <!-- 第二頁 -->
+    <!-- 第二页 - 抽签结果页 -->
     <div id="page2" class="page">
         <div class="container">
-            <h2>抽籤結果</h2>
+            <h2>抽签结果</h2>
 
-            <div id="result" class="result-box"></div>
+            <div id="result" class="result-box">
+                <!-- 结果将在这里显示 -->
+            </div>
+            
+            <div class="status-info">
+                您的抽签已完成，请记住您的分组结果
+            </div>
 
             <button onclick="back()">返回</button>
+            
+            <div class="session-info">
+                
+            </div>
+        </div>
+    </div>
+
+    <!-- 第三页 - 查看分组页 -->
+    <div id="page3" class="page">
+        <div class="container">
+            <h2>您的分组结果</h2>
+
+            <div id="viewResult" class="view-box">
+                <!-- 查看结果将在这里显示 -->
+            </div>
+            
+            <div class="status-info">
+                这是您的分组信息
+            </div>
+
+            <button onclick="back()">返回</button>
+            
+            <div class="session-info">
+                
+            </div>
         </div>
     </div>
 
     <script>
-        // 固定分組（你只要不改 VALUE 就不會壞）
-        const groupA = ["1", "3", "8", "5"]; // 第一組
-        const groupB = ["2", "4", "6", "7"]; // 第二組
-
-        function draw() {
-            const selected = document.getElementById("person").value;
-            const selectedText = document.getElementById("person").options[document.getElementById("person").selectedIndex].text;
-
-            let groupName = "";
-            if (groupA.includes(selected)) {
-                groupName = "第一組";
-            } else {
-                groupName = "第二組";
+        // 固定分组
+        const groupA = ["1", "3", "8", "5"]; // 第一组
+        const groupB = ["2", "4", "6", "7"]; // 第二组
+        
+        // 队伍名称映射
+        const teamNames = {
+            "1": "集团联队",
+            "2": "运营一队", 
+            "3": "运营二队",
+            "4": "运营三队",
+            "5": "建设联队",
+            "6": "慧生活联队",
+            "7": "枢纽联队",
+            "8": "公交联队"
+        };
+        
+        // 会话存储键名
+        const SESSION_STORAGE_KEY = 'myDrawResult';
+        
+        // 获取当前会话的抽签结果
+        let myDrawResult = null;
+        try {
+            const stored = sessionStorage.getItem(SESSION_STORAGE_KEY);
+            if (stored) {
+                myDrawResult = JSON.parse(stored);
             }
+        } catch (e) {
+            console.log('无法读取会话存储，将创建新的会话');
+        }
+        
+        // 当前选中的队伍
+        let currentSelectedTeam = null;
+        
+        // 页面加载时初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            const selectElement = document.getElementById('person');
+            const actionButton = document.getElementById('actionButton');
+            const statusInfo = document.getElementById('statusInfo');
+            const welcomeMessage = document.getElementById('welcomeMessage');
+            
+            // 检查当前会话是否已经抽签
+            if (myDrawResult) {
+                // 已抽签，更新欢迎信息
+                welcomeMessage.innerHTML = `欢迎回来！<strong>${teamNames[myDrawResult.teamId]}</strong>`;
+                
+                // 自动选中已抽签的队伍
+                for(let i = 0; i < selectElement.options.length; i++) {
+                    const option = selectElement.options[i];
+                    if(option.value === myDrawResult.teamId) {
+                        option.selected = true;
+                        option.text = teamNames[myDrawResult.teamId] + " (已抽签)";
+                        currentSelectedTeam = myDrawResult.teamId;
+                        break;
+                    }
+                }
+                
+                // 更新按钮为查看模式
+                actionButton.disabled = false;
+                actionButton.textContent = "查看我的分组";
+                actionButton.className = "view-btn";
+                statusInfo.textContent = "您已抽签，点击查看分组结果";
+                
+                // 更新下拉框其他选项
+                for(let i = 0; i < selectElement.options.length; i++) {
+                    const option = selectElement.options[i];
+                    if(option.value && option.value !== myDrawResult.teamId) {
+                        option.disabled = true;
+                    }
+                }
+            } else {
+                // 未抽签，正常显示所有选项
+                statusInfo.textContent = "请选择你的队伍进行抽签";
+                actionButton.disabled = true;
+            }
+            
+            // 选择变化事件
+            selectElement.addEventListener('change', function() {
+                const selectedValue = this.value;
+                currentSelectedTeam = selectedValue;
+                
+                if (!selectedValue) {
+                    actionButton.disabled = true;
+                    actionButton.textContent = "抽签";
+                    actionButton.className = "draw-btn";
+                    statusInfo.textContent = "请选择你的队伍进行抽签";
+                } else if (myDrawResult && myDrawResult.teamId === selectedValue) {
+                    // 当前会话已抽签的队伍
+                    actionButton.disabled = false;
+                    actionButton.textContent = "查看我的分组";
+                    actionButton.className = "view-btn";
+                    statusInfo.textContent = "您已抽签，点击查看分组结果";
+                } else if (myDrawResult) {
+                    // 已抽签的会话选择其他队伍
+                    actionButton.disabled = true;
+                    actionButton.textContent = "抽签";
+                    actionButton.className = "draw-btn";
+                    statusInfo.textContent = "您已抽签，只能查看自己的分组";
+                } else {
+                    // 未抽签的会话
+                    actionButton.disabled = false;
+                    actionButton.textContent = "抽签";
+                    actionButton.className = "draw-btn";
+                    statusInfo.textContent = "点击抽签按钮查看结果";
+                }
+            });
+        });
 
-            document.getElementById("result").innerHTML =
-                "<b>" + selectedText + "</b> 被分配到：<br><br><span style='font-size:24px;color:#4a90e2'><b>" + groupName + "</b></span>";
+        function handleAction() {
+            const selectElement = document.getElementById("person");
+            const selectedValue = selectElement.value;
+            
+            if (!selectedValue) return;
+            
+            const selectedText = teamNames[selectedValue];
+            
+            if (myDrawResult) {
+                // 查看分组
+                showMyGroup(selectedValue, selectedText);
+            } else {
+                // 进行抽签
+                drawTeam(selectedValue, selectedText);
+            }
+        }
 
-            // 切換頁面
+        function drawTeam(selectedValue, selectedText) {
+            let groupName = "";
+            if (groupA.includes(selectedValue)) {
+                groupName = "第一组";
+            } else {
+                groupName = "第二组";
+            }
+            
+            // 保存到会话存储
+            myDrawResult = {
+                teamId: selectedValue,
+                teamName: selectedText,
+                group: groupName,
+                timestamp: new Date().toISOString()
+            };
+            
+            try {
+                sessionStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(myDrawResult));
+            } catch (e) {
+                console.log('无法保存到会话存储');
+            }
+            
+            // 禁用其他选项
+            const selectElement = document.getElementById('person');
+            for(let i = 0; i < selectElement.options.length; i++) {
+                const option = selectElement.options[i];
+                if(option.value && option.value !== selectedValue) {
+                    option.disabled = true;
+                }
+            }
+            
+            // 显示结果
+            document.getElementById("result").innerHTML = `
+                <div class="selected-team">${selectedText}</div>
+                <div>您被分配到：</div>
+                <div class="group-result">${groupName}</div>
+                <div style="margin-top: 15px; font-size: 16px; color: #666;">
+                    请记住您的分组结果<br>
+                    
+                </div>
+            `;
+
+            // 切换页面
             document.getElementById("page1").classList.remove("active");
             document.getElementById("page2").classList.add("active");
         }
+        
+        function showMyGroup(selectedValue, selectedText) {
+            if (!myDrawResult || myDrawResult.teamId !== selectedValue) {
+                alert("您只能查看自己的分组信息");
+                return;
+            }
+            
+            // 显示结果
+            document.getElementById("viewResult").innerHTML = `
+                <div class="view-team">${selectedText}</div>
+                <div>您的分组：</div>
+                <div class="group-result">${myDrawResult.group}</div>
+                <div style="margin-top: 15px; font-size: 16px; color: #666;">
+                    这是您的分组结果<br>
+                    
+                </div>
+            `;
+
+            // 切换页面
+            document.getElementById("page1").classList.remove("active");
+            document.getElementById("page3").classList.add("active");
+        }
 
         function back() {
-            document.getElementById("page2").classList.remove("active");
+            // 返回首页
+            const selectElement = document.getElementById('person');
+            const actionButton = document.getElementById('actionButton');
+            const statusInfo = document.getElementById('statusInfo');
+            
+            if (myDrawResult) {
+                // 已抽签，更新按钮状态
+                actionButton.disabled = false;
+                actionButton.textContent = "查看我的分组";
+                actionButton.className = "view-btn";
+                statusInfo.textContent = "您已抽签，点击查看分组结果";
+            } else {
+                // 未抽签
+                actionButton.disabled = true;
+                actionButton.textContent = "抽签";
+                actionButton.className = "draw-btn";
+                statusInfo.textContent = "请选择你的队伍进行抽签";
+            }
+            
+            document.querySelector('.page.active').classList.remove('active');
             document.getElementById("page1").classList.add("active");
+        }
+        
+        // 添加清除会话的按钮（测试用）
+        function clearSessionForTesting() {
+            if (confirm("确定要清除当前会话的抽签记录吗？这将允许您重新抽签。")) {
+                sessionStorage.removeItem(SESSION_STORAGE_KEY);
+                location.reload();
+            }
         }
     </script>
 
