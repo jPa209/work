@@ -17,13 +17,13 @@
         }
 
         .container {
-            max-width: 450px;
+            max-width: 550px; /* 宽度增加 */
             width: 90%;
             margin: 60px auto;
             background: rgba(255, 255, 255, 0.95);
-            padding: 30px;
-            border-radius: 18px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            padding: 40px; /* 内边距增加 */
+            border-radius: 22px; /* 圆角增加 */
+            box-shadow: 0 10px 30px rgba(0,0,0,0.18); /* 阴影增强 */
             animation: fadeIn 0.4s ease;
             position: relative;
             overflow: hidden;
@@ -32,56 +32,61 @@
         h2 {
             text-align: center;
             color: #333;
-            margin-bottom: 25px;
+            margin-bottom: 35px; /* 下边距增加 */
+            font-size: 32px; /* 字体增大 */
         }
 
         .select-label {
             display: block;
-            margin-bottom: 10px;
+            margin-bottom: 18px; /* 边距增加 */
             color: #555;
-            font-size: 16px;
+            font-size: 20px; /* 字体增大 */
+            font-weight: 500;
         }
 
         select {
             width: 100%;
-            padding: 12px;
-            font-size: 18px;
-            border-radius: 8px;
-            border: 1px solid #ccc;
+            padding: 18px; /* 内边距增加 */
+            font-size: 22px; /* 字体增大 */
+            border-radius: 12px; /* 圆角增加 */
+            border: 2px solid #ccc; /* 边框加粗 */
             background-color: #fff;
             box-sizing: border-box;
             transition: all 0.3s ease;
+            height: 70px; /* 高度增加 */
         }
 
         select:focus {
             border-color: #4a90e2;
-            box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.2);
+            box-shadow: 0 0 0 4px rgba(74, 144, 226, 0.25); /* 阴影增强 */
             outline: none;
         }
 
         button {
             width: 100%;
-            padding: 12px;
-            margin-top: 25px;
-            font-size: 18px;
+            padding: 20px; /* 内边距增加 */
+            margin-top: 35px; /* 上边距增加 */
+            font-size: 24px; /* 字体增大 */
             border: none;
-            border-radius: 10px;
+            border-radius: 14px; /* 圆角增加 */
             cursor: pointer;
             color: white;
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
+            height: 75px; /* 高度增加 */
+            font-weight: 600; /* 字体加粗 */
         }
 
         .draw-btn {
             background: linear-gradient(135deg, #4a90e2, #357ABD);
-            box-shadow: 0 4px 15px rgba(74, 144, 226, 0.3);
+            box-shadow: 0 6px 20px rgba(74, 144, 226, 0.35); /* 阴影增强 */
         }
         
         .draw-btn:hover {
             background: linear-gradient(135deg, #357ABD, #2a65a0);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(74, 144, 226, 0.4);
+            transform: translateY(-3px); /* 悬停效果增强 */
+            box-shadow: 0 8px 25px rgba(74, 144, 226, 0.5); /* 阴影增强 */
         }
         
         .draw-btn:active {
@@ -90,13 +95,13 @@
         
         .view-btn {
             background: linear-gradient(135deg, #2ecc71, #27ae60);
-            box-shadow: 0 4px 15px rgba(46, 204, 113, 0.3);
+            box-shadow: 0 6px 20px rgba(46, 204, 113, 0.35); /* 阴影增强 */
         }
         
         .view-btn:hover {
             background: linear-gradient(135deg, #27ae60, #219653);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(46, 204, 113, 0.4);
+            transform: translateY(-3px); /* 悬停效果增强 */
+            box-shadow: 0 8px 25px rgba(46, 204, 113, 0.5); /* 阴影增强 */
         }
 
         button:disabled {
@@ -108,13 +113,13 @@
 
         .result-box {
             text-align: center;
-            font-size: 20px;
-            padding: 20px;
+            font-size: 26px; /* 字体增大 */
+            padding: 30px; /* 内边距增加 */
             background: #f7faff;
-            border-radius: 10px;
-            margin-top: 20px;
-            border: 1px solid #cfe0ff;
-            min-height: 100px;
+            border-radius: 14px; /* 圆角增加 */
+            margin-top: 30px; /* 上边距增加 */
+            border: 2px solid #cfe0ff; /* 边框加粗 */
+            min-height: 180px; /* 最小高度增加 */
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -124,13 +129,13 @@
         
         .view-box {
             text-align: center;
-            font-size: 20px;
-            padding: 20px;
+            font-size: 26px; /* 字体增大 */
+            padding: 30px; /* 内边距增加 */
             background: #f0fff4;
-            border-radius: 10px;
-            margin-top: 20px;
-            border: 1px solid #c1e7c8;
-            min-height: 100px;
+            border-radius: 14px; /* 圆角增加 */
+            margin-top: 30px; /* 上边距增加 */
+            border: 2px solid #c1e7c8; /* 边框加粗 */
+            min-height: 180px; /* 最小高度增加 */
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -154,54 +159,59 @@
         
         .status-info {
             text-align: center;
-            font-size: 14px;
+            font-size: 18px; /* 字体增大 */
             color: #666;
-            margin-top: 10px;
-            padding: 8px;
+            margin-top: 18px; /* 上边距增加 */
+            padding: 12px; /* 内边距增加 */
             background-color: #f0f8ff;
-            border-radius: 5px;
+            border-radius: 8px; /* 圆角增加 */
             transition: all 0.3s ease;
+            font-weight: 500;
         }
         
         .selected-team {
-            font-size: 22px;
+            font-size: 30px; /* 字体增大 */
             color: #4a90e2;
-            margin: 10px 0;
+            margin: 18px 0; /* 边距增加 */
             animation: teamReveal 0.8s ease;
+            font-weight: 600;
         }
         
         .view-team {
-            font-size: 22px;
+            font-size: 30px; /* 字体增大 */
             color: #2ecc71;
-            margin: 10px 0;
+            margin: 18px 0; /* 边距增加 */
             animation: teamReveal 0.8s ease;
+            font-weight: 600;
         }
         
         .group-result {
-            font-size: 26px;
+            font-size: 36px; /* 字体增大 */
             color: #e74c3c;
             font-weight: bold;
-            margin: 15px 0;
+            margin: 25px 0; /* 边距增加 */
             animation: groupReveal 1s ease;
         }
         
         .welcome-message {
             text-align: center;
-            font-size: 16px;
+            font-size: 22px; /* 字体增大 */
             color: #666;
-            margin-bottom: 20px;
-            padding: 10px;
+            margin-bottom: 30px; /* 下边距增加 */
+            padding: 18px; /* 内边距增加 */
             background-color: #f9f9f9;
-            border-radius: 8px;
+            border-radius: 12px; /* 圆角增加 */
             animation: fadeIn 0.6s ease;
+            font-weight: 500;
+            border: 1px solid #eee;
         }
         
         .session-info {
             text-align: center;
-            font-size: 14px;
+            font-size: 16px; /* 字体增大 */
             color: #888;
-            margin-top: 15px;
-            padding: 5px;
+            margin-top: 25px; /* 上边距增加 */
+            padding: 10px; /* 内边距增加 */
             font-style: italic;
         }
         
@@ -222,10 +232,10 @@
         }
         
         .lottery-machine {
-            width: 200px;
-            height: 200px;
+            width: 250px; /* 宽度增加 */
+            height: 250px; /* 高度增加 */
             position: relative;
-            margin-bottom: 30px;
+            margin-bottom: 40px; /* 下边距增加 */
         }
         
         .lottery-wheel {
@@ -235,16 +245,16 @@
             background: linear-gradient(135deg, #4a90e2, #2ecc71, #e74c3c, #f1c40f);
             position: relative;
             animation: spin 1.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-            box-shadow: 0 0 30px rgba(0,0,0,0.2);
+            box-shadow: 0 0 40px rgba(0,0,0,0.25); /* 阴影增强 */
         }
         
         .lottery-wheel::before {
             content: '';
             position: absolute;
-            top: 10px;
-            left: 10px;
-            right: 10px;
-            bottom: 10px;
+            top: 15px; /* 调整 */
+            left: 15px; /* 调整 */
+            right: 15px; /* 调整 */
+            bottom: 15px; /* 调整 */
             background: white;
             border-radius: 50%;
             z-index: 1;
@@ -259,8 +269,8 @@
         
         .lottery-dot {
             position: absolute;
-            width: 12px;
-            height: 12px;
+            width: 16px; /* 大小增加 */
+            height: 16px; /* 大小增加 */
             background: #4a90e2;
             border-radius: 50%;
             top: 50%;
@@ -268,21 +278,21 @@
             transform-origin: 0 0;
         }
         
-        .lottery-dot:nth-child(1) { transform: rotate(0deg) translateX(90px); background: #4a90e2; }
-        .lottery-dot:nth-child(2) { transform: rotate(45deg) translateX(90px); background: #2ecc71; }
-        .lottery-dot:nth-child(3) { transform: rotate(90deg) translateX(90px); background: #e74c3c; }
-        .lottery-dot:nth-child(4) { transform: rotate(135deg) translateX(90px); background: #f1c40f; }
-        .lottery-dot:nth-child(5) { transform: rotate(180deg) translateX(90px); background: #9b59b6; }
-        .lottery-dot:nth-child(6) { transform: rotate(225deg) translateX(90px); background: #1abc9c; }
-        .lottery-dot:nth-child(7) { transform: rotate(270deg) translateX(90px); background: #e67e22; }
-        .lottery-dot:nth-child(8) { transform: rotate(315deg) translateX(90px); background: #34495e; }
+        .lottery-dot:nth-child(1) { transform: rotate(0deg) translateX(110px); background: #4a90e2; }
+        .lottery-dot:nth-child(2) { transform: rotate(45deg) translateX(110px); background: #2ecc71; }
+        .lottery-dot:nth-child(3) { transform: rotate(90deg) translateX(110px); background: #e74c3c; }
+        .lottery-dot:nth-child(4) { transform: rotate(135deg) translateX(110px); background: #f1c40f; }
+        .lottery-dot:nth-child(5) { transform: rotate(180deg) translateX(110px); background: #9b59b6; }
+        .lottery-dot:nth-child(6) { transform: rotate(225deg) translateX(110px); background: #1abc9c; }
+        .lottery-dot:nth-child(7) { transform: rotate(270deg) translateX(110px); background: #e67e22; }
+        .lottery-dot:nth-child(8) { transform: rotate(315deg) translateX(110px); background: #34495e; }
         
         .lottery-center {
             position: absolute;
             top: 50%;
             left: 50%;
-            width: 40px;
-            height: 40px;
+            width: 50px; /* 大小增加 */
+            height: 50px; /* 大小增加 */
             background: #4a90e2;
             border-radius: 50%;
             transform: translate(-50%, -50%);
@@ -292,15 +302,16 @@
             justify-content: center;
             color: white;
             font-weight: bold;
-            box-shadow: 0 0 10px rgba(0,0,0,0.3);
+            box-shadow: 0 0 15px rgba(0,0,0,0.4); /* 阴影增强 */
+            font-size: 24px; /* 字体增大 */
         }
         
         .lottery-text {
-            font-size: 24px;
+            font-size: 32px; /* 字体增大 */
             color: #4a90e2;
             font-weight: bold;
             text-align: center;
-            margin-top: 20px;
+            margin-top: 30px; /* 上边距增加 */
             animation: pulse 1s ease infinite;
         }
         
@@ -340,8 +351,8 @@
         /* 结果页面的闪烁效果 */
         .sparkle {
             position: absolute;
-            width: 20px;
-            height: 20px;
+            width: 25px; /* 大小增加 */
+            height: 25px; /* 大小增加 */
             background: radial-gradient(circle, #ffdd00, transparent);
             border-radius: 50%;
             animation: sparkle 1s ease-out;
@@ -367,17 +378,17 @@
         /* 加载条 */
         .progress-bar {
             width: 80%;
-            height: 6px;
+            height: 10px; /* 高度增加 */
             background: #e0e0e0;
-            border-radius: 3px;
-            margin-top: 20px;
+            border-radius: 5px; /* 圆角增加 */
+            margin-top: 30px; /* 上边距增加 */
             overflow: hidden;
         }
         
         .progress-fill {
             height: 100%;
             background: linear-gradient(90deg, #4a90e2, #2ecc71);
-            border-radius: 3px;
+            border-radius: 5px; /* 圆角增加 */
             width: 0%;
             animation: progress 2s ease-in-out forwards;
         }
@@ -385,6 +396,18 @@
         @keyframes progress {
             0% { width: 0%; }
             100% { width: 100%; }
+        }
+        
+        /* 分组说明样式 */
+        .group-explanation {
+            text-align: center;
+            font-size: 18px; /* 字体增大 */
+            color: #666;
+            margin-top: 25px; /* 上边距增加 */
+            padding: 15px; /* 内边距增加 */
+            background-color: #f8f9fa;
+            border-radius: 10px; /* 圆角增加 */
+            border: 1px solid #e9ecef;
         }
     </style>
 </head>
@@ -435,6 +458,10 @@
                 <option value="8">公交联队</option>
             </select>
             
+            <div class="group-explanation">
+                抽签将分为：<strong>A组</strong> 和 <strong>B组</strong>
+            </div>
+            
             <div class="status-info" id="statusInfo">
                 请选择你的队伍进行抽签
             </div>
@@ -442,7 +469,8 @@
             <button id="actionButton" class="draw-btn" onclick="handleAction(event)">抽签</button>
             
             <div class="session-info">
-                
+                <!-- 测试用清除按钮（开发时可以取消注释） -->
+                <!-- <button onclick="clearSessionForTesting()" style="margin-top:10px; background:#f39c12;">清除抽签记录(测试)</button> -->
             </div>
         </div>
     </div>
@@ -490,9 +518,9 @@
     </div>
 
     <script>
-        // 固定分组
-        const groupA = ["1", "3", "8", "5"]; // 第一组
-        const groupB = ["2", "4", "6", "7"]; // 第二组
+        // 固定分组 - 现在分为A组和B组
+        const groupA = ["1", "3", "8", "5"]; // A组
+        const groupB = ["2", "4", "6", "7"]; // B组
         
         // 队伍名称映射
         const teamNames = {
@@ -683,9 +711,9 @@
         function drawTeam(selectedValue, selectedText) {
             let groupName = "";
             if (groupA.includes(selectedValue)) {
-                groupName = "第一组";
+                groupName = "A组";
             } else {
-                groupName = "第二组";
+                groupName = "B组";
             }
             
             // 保存到会话存储
@@ -720,9 +748,9 @@
                 <div class="selected-team">${selectedText}</div>
                 <div>您被分配到：</div>
                 <div class="group-result">${groupName}</div>
-                <div style="margin-top: 15px; font-size: 16px; color: #666;">
+                <div style="margin-top: 20px; font-size: 20px; color: #666;">
                     请记住您的分组结果<br>
-                    <small></small>
+                    <small>比赛将按A组和B组进行</small>
                 </div>
             `;
 
@@ -765,9 +793,9 @@
                 <div class="view-team">${selectedText}</div>
                 <div>您的分组：</div>
                 <div class="group-result">${myDrawResult.group}</div>
-                <div style="margin-top: 15px; font-size: 16px; color: #666;">
+                <div style="margin-top: 20px; font-size: 20px; color: #666;">
                     这是您的分组结果<br>
-                    <small></small>
+                    <small>比赛将按A组和B组进行</small>
                 </div>
             `;
 
