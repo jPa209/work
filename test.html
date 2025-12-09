@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <title>抽签助手</title>
+    <title>抽签分组</title>
     <style>
         body {
             font-family: "Microsoft YaHei", sans-serif;
@@ -13,6 +13,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            overflow-x: hidden;
         }
 
         .container {
@@ -24,6 +25,8 @@
             border-radius: 18px;
             box-shadow: 0 8px 25px rgba(0,0,0,0.15);
             animation: fadeIn 0.4s ease;
+            position: relative;
+            overflow: hidden;
         }
 
         h2 {
@@ -47,6 +50,13 @@
             border: 1px solid #ccc;
             background-color: #fff;
             box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
+
+        select:focus {
+            border-color: #4a90e2;
+            box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.2);
+            outline: none;
         }
 
         button {
@@ -58,28 +68,42 @@
             border-radius: 10px;
             cursor: pointer;
             color: white;
-            transition: 0.2s;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
         }
 
         .draw-btn {
-            background: #4a90e2;
+            background: linear-gradient(135deg, #4a90e2, #357ABD);
+            box-shadow: 0 4px 15px rgba(74, 144, 226, 0.3);
         }
         
         .draw-btn:hover {
-            background: #357ABD;
+            background: linear-gradient(135deg, #357ABD, #2a65a0);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(74, 144, 226, 0.4);
+        }
+        
+        .draw-btn:active {
+            transform: translateY(0);
         }
         
         .view-btn {
-            background: #2ecc71;
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
+            box-shadow: 0 4px 15px rgba(46, 204, 113, 0.3);
         }
         
         .view-btn:hover {
-            background: #27ae60;
+            background: linear-gradient(135deg, #27ae60, #219653);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(46, 204, 113, 0.4);
         }
 
         button:disabled {
             background: #cccccc;
             cursor: not-allowed;
+            box-shadow: none;
+            transform: none;
         }
 
         .result-box {
@@ -94,6 +118,8 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
+            position: relative;
+            overflow: hidden;
         }
         
         .view-box {
@@ -108,6 +134,8 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
+            position: relative;
+            overflow: hidden;
         }
 
         .page { 
@@ -132,18 +160,21 @@
             padding: 8px;
             background-color: #f0f8ff;
             border-radius: 5px;
+            transition: all 0.3s ease;
         }
         
         .selected-team {
             font-size: 22px;
             color: #4a90e2;
             margin: 10px 0;
+            animation: teamReveal 0.8s ease;
         }
         
         .view-team {
             font-size: 22px;
             color: #2ecc71;
             margin: 10px 0;
+            animation: teamReveal 0.8s ease;
         }
         
         .group-result {
@@ -151,6 +182,7 @@
             color: #e74c3c;
             font-weight: bold;
             margin: 15px 0;
+            animation: groupReveal 1s ease;
         }
         
         .welcome-message {
@@ -161,6 +193,7 @@
             padding: 10px;
             background-color: #f9f9f9;
             border-radius: 8px;
+            animation: fadeIn 0.6s ease;
         }
         
         .session-info {
@@ -171,15 +204,219 @@
             padding: 5px;
             font-style: italic;
         }
+        
+        /* 抽签动画容器 */
+        .draw-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            animation: fadeOut 0.5s ease 2s forwards;
+        }
+        
+        .lottery-machine {
+            width: 200px;
+            height: 200px;
+            position: relative;
+            margin-bottom: 30px;
+        }
+        
+        .lottery-wheel {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #4a90e2, #2ecc71, #e74c3c, #f1c40f);
+            position: relative;
+            animation: spin 1.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+            box-shadow: 0 0 30px rgba(0,0,0,0.2);
+        }
+        
+        .lottery-wheel::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            bottom: 10px;
+            background: white;
+            border-radius: 50%;
+            z-index: 1;
+        }
+        
+        .lottery-dots {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+        }
+        
+        .lottery-dot {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background: #4a90e2;
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform-origin: 0 0;
+        }
+        
+        .lottery-dot:nth-child(1) { transform: rotate(0deg) translateX(90px); background: #4a90e2; }
+        .lottery-dot:nth-child(2) { transform: rotate(45deg) translateX(90px); background: #2ecc71; }
+        .lottery-dot:nth-child(3) { transform: rotate(90deg) translateX(90px); background: #e74c3c; }
+        .lottery-dot:nth-child(4) { transform: rotate(135deg) translateX(90px); background: #f1c40f; }
+        .lottery-dot:nth-child(5) { transform: rotate(180deg) translateX(90px); background: #9b59b6; }
+        .lottery-dot:nth-child(6) { transform: rotate(225deg) translateX(90px); background: #1abc9c; }
+        .lottery-dot:nth-child(7) { transform: rotate(270deg) translateX(90px); background: #e67e22; }
+        .lottery-dot:nth-child(8) { transform: rotate(315deg) translateX(90px); background: #34495e; }
+        
+        .lottery-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 40px;
+            height: 40px;
+            background: #4a90e2;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 3;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            box-shadow: 0 0 10px rgba(0,0,0,0.3);
+        }
+        
+        .lottery-text {
+            font-size: 24px;
+            color: #4a90e2;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 20px;
+            animation: pulse 1s ease infinite;
+        }
+        
+        /* 动画定义 */
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @keyframes fadeOut {
+            0% { opacity: 1; }
+            100% { opacity: 0; visibility: hidden; }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.8; }
+        }
+        
+        @keyframes teamReveal {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes groupReveal {
+            0% { opacity: 0; transform: scale(0.8); }
+            70% { opacity: 1; transform: scale(1.1); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+        
+        @keyframes sparkle {
+            0% { opacity: 0; transform: scale(0) rotate(0deg); }
+            50% { opacity: 1; transform: scale(1) rotate(180deg); }
+            100% { opacity: 0; transform: scale(0) rotate(360deg); }
+        }
+        
+        /* 结果页面的闪烁效果 */
+        .sparkle {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: radial-gradient(circle, #ffdd00, transparent);
+            border-radius: 50%;
+            animation: sparkle 1s ease-out;
+        }
+        
+        /* 按钮点击涟漪效果 */
+        .ripple {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.6);
+            transform: scale(0);
+            animation: ripple 0.6s linear;
+            pointer-events: none;
+        }
+        
+        @keyframes ripple {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+        
+        /* 加载条 */
+        .progress-bar {
+            width: 80%;
+            height: 6px;
+            background: #e0e0e0;
+            border-radius: 3px;
+            margin-top: 20px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4a90e2, #2ecc71);
+            border-radius: 3px;
+            width: 0%;
+            animation: progress 2s ease-in-out forwards;
+        }
+        
+        @keyframes progress {
+            0% { width: 0%; }
+            100% { width: 100%; }
+        }
     </style>
 </head>
 
 <body>
 
+    <!-- 抽签动画层 -->
+    <div id="drawAnimation" class="draw-animation" style="display: none;">
+        <div class="lottery-machine">
+            <div class="lottery-wheel"></div>
+            <div class="lottery-dots">
+                <div class="lottery-dot"></div>
+                <div class="lottery-dot"></div>
+                <div class="lottery-dot"></div>
+                <div class="lottery-dot"></div>
+                <div class="lottery-dot"></div>
+                <div class="lottery-dot"></div>
+                <div class="lottery-dot"></div>
+                <div class="lottery-dot"></div>
+            </div>
+            <div class="lottery-center">抽</div>
+        </div>
+        <div class="lottery-text">正在抽签中...</div>
+        <div class="progress-bar">
+            <div class="progress-fill"></div>
+        </div>
+    </div>
+
     <!-- 第一页 -->
     <div id="page1" class="page active">
         <div class="container">
-            <h2>抽签助手</h2>
+            <h2>抽签分组</h2>
             
             <div class="welcome-message" id="welcomeMessage">
                 欢迎！请选择您的队伍进行抽签
@@ -202,7 +439,7 @@
                 请选择你的队伍进行抽签
             </div>
 
-            <button id="actionButton" class="draw-btn" onclick="handleAction()">抽签</button>
+            <button id="actionButton" class="draw-btn" onclick="handleAction(event)">抽签</button>
             
             <div class="session-info">
                 
@@ -293,6 +530,9 @@
             const statusInfo = document.getElementById('statusInfo');
             const welcomeMessage = document.getElementById('welcomeMessage');
             
+            // 为按钮添加涟漪效果
+            actionButton.addEventListener('click', createRipple);
+            
             // 检查当前会话是否已经抽签
             if (myDrawResult) {
                 // 已抽签，更新欢迎信息
@@ -360,7 +600,28 @@
             });
         });
 
-        function handleAction() {
+        // 涟漪效果函数
+        function createRipple(event) {
+            const button = event.currentTarget;
+            const circle = document.createElement("span");
+            const diameter = Math.max(button.clientWidth, button.clientHeight);
+            const radius = diameter / 2;
+
+            circle.style.width = circle.style.height = `${diameter}px`;
+            circle.style.left = `${event.clientX - button.getBoundingClientRect().left - radius}px`;
+            circle.style.top = `${event.clientY - button.getBoundingClientRect().top - radius}px`;
+            circle.classList.add("ripple");
+
+            const ripple = button.getElementsByClassName("ripple")[0];
+
+            if (ripple) {
+                ripple.remove();
+            }
+
+            button.appendChild(circle);
+        }
+
+        function handleAction(event) {
             const selectElement = document.getElementById("person");
             const selectedValue = selectElement.value;
             
@@ -372,8 +633,50 @@
                 // 查看分组
                 showMyGroup(selectedValue, selectedText);
             } else {
-                // 进行抽签
-                drawTeam(selectedValue, selectedText);
+                // 进行抽签 - 先显示动画
+                showDrawAnimation(() => {
+                    drawTeam(selectedValue, selectedText);
+                });
+            }
+        }
+
+        // 显示抽签动画
+        function showDrawAnimation(callback) {
+            const animation = document.getElementById('drawAnimation');
+            animation.style.display = 'flex';
+            
+            // 创建随机闪烁效果
+            createSparkles();
+            
+            // 2秒后执行回调并隐藏动画
+            setTimeout(() => {
+                if (callback) callback();
+                setTimeout(() => {
+                    animation.style.display = 'none';
+                }, 500);
+            }, 2000);
+        }
+        
+        // 创建闪烁效果
+        function createSparkles() {
+            const animation = document.getElementById('drawAnimation');
+            
+            for (let i = 0; i < 15; i++) {
+                setTimeout(() => {
+                    const sparkle = document.createElement('div');
+                    sparkle.className = 'sparkle';
+                    sparkle.style.left = Math.random() * 100 + '%';
+                    sparkle.style.top = Math.random() * 100 + '%';
+                    sparkle.style.animationDelay = Math.random() * 0.5 + 's';
+                    animation.appendChild(sparkle);
+                    
+                    // 动画结束后移除
+                    setTimeout(() => {
+                        if (sparkle.parentNode) {
+                            sparkle.parentNode.removeChild(sparkle);
+                        }
+                    }, 1000);
+                }, i * 100);
             }
         }
 
@@ -408,20 +711,47 @@
                 }
             }
             
-            // 显示结果
+            // 显示结果 - 添加一些闪烁效果
+            setTimeout(() => {
+                createResultSparkles();
+            }, 100);
+            
             document.getElementById("result").innerHTML = `
                 <div class="selected-team">${selectedText}</div>
                 <div>您被分配到：</div>
                 <div class="group-result">${groupName}</div>
                 <div style="margin-top: 15px; font-size: 16px; color: #666;">
                     请记住您的分组结果<br>
-                    
+                    <small></small>
                 </div>
             `;
 
             // 切换页面
             document.getElementById("page1").classList.remove("active");
             document.getElementById("page2").classList.add("active");
+        }
+        
+        // 为结果页面创建闪烁效果
+        function createResultSparkles() {
+            const resultBox = document.getElementById('result');
+            
+            for (let i = 0; i < 8; i++) {
+                setTimeout(() => {
+                    const sparkle = document.createElement('div');
+                    sparkle.className = 'sparkle';
+                    sparkle.style.left = Math.random() * 80 + 10 + '%';
+                    sparkle.style.top = Math.random() * 80 + 10 + '%';
+                    sparkle.style.animationDelay = Math.random() * 0.3 + 's';
+                    resultBox.appendChild(sparkle);
+                    
+                    // 动画结束后移除
+                    setTimeout(() => {
+                        if (sparkle.parentNode) {
+                            sparkle.parentNode.removeChild(sparkle);
+                        }
+                    }, 1000);
+                }, i * 200);
+            }
         }
         
         function showMyGroup(selectedValue, selectedText) {
@@ -437,7 +767,7 @@
                 <div class="group-result">${myDrawResult.group}</div>
                 <div style="margin-top: 15px; font-size: 16px; color: #666;">
                     这是您的分组结果<br>
-                    
+                    <small></small>
                 </div>
             `;
 
